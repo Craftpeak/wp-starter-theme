@@ -1,0 +1,21 @@
+{
+	"name": "craftpeak-wp-starter-theme",
+	"homepage": "https://github.com/Craftpeak/wp-starter-theme",
+	"authors": [
+		"Julien Melissas <julien@craftpeak.com>"
+	],
+	"license": "GPL2",
+	"private": true,
+	"dependencies": {
+		"modernizr": "2.8.2",
+		"normalize.css": "~3.0.3"
+	},
+	"overrides": {
+		"modernizr": {
+			"main": "./modernizr.js"
+		},
+		"normalize.css": {
+			"main": "./normalize.css"
+		}
+	}
+}
