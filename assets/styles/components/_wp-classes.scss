@@ -30,8 +30,13 @@
 // }
 
 // Captions
-.wp-caption { }
-.wp-caption-text { }
+.wp-caption {
+	margin-bottom: $space-sm;
+	max-width: 100%;
+}
+.wp-caption-text {
+	margin: $space-sm 0;
+}
 
 // Text meant only for screen readers
 .screen-reader-text {
