@@ -6,6 +6,12 @@
 			],
 			"main": true
 		},
+		"customizer.js": {
+			"files": [
+				"scripts/customizer.js"
+			],
+			"main": true
+		},
 		"main.css": {
 			"files": [
 				"styles/main.scss"
