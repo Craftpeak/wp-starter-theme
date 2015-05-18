@@ -2,6 +2,19 @@
 
 namespace Craftpeak\WPST\Cleanup;
 
+
+/**
+ * Turn off things that can screw things up.
+ */
+
+if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
+	define( 'DISALLOW_FILE_EDIT', true );
+}
+if ( ! defined( 'DISALLOW_FILE_MODS' ) ) {
+	define( 'DISALLOW_FILE_MODS', true );
+}
+
+
 /**
  * Clean Up WP HEAD
  */
@@ -19,26 +32,81 @@ function head_cleanup() {
 	remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
 	// WP version
 	remove_action( 'wp_head', 'wp_generator' );
-	// remove WP version from css
-	add_filter( 'style_loader_src', __NAMESPACE__ . '\\remove_wp_ver_css_js', 9999 );
-	// remove Wp version from scripts
-	add_filter( 'script_loader_src', __NAMESPACE__ . '\\remove_wp_ver_css_js', 9999 );
 
 } /* end head cleanup */
 add_action( 'init', __NAMESPACE__ . '\\head_cleanup' );
 
 
-/* 
- * Remove Query Strings From CSS & Javascript
- */ 
-function remove_wp_ver_css_js( $src ) {
+/**
+ * Remove the Admin Toolbar Links
+ */
+function remove_admin_bar_links() {
 
-	if ( strpos( $src, 'ver=' ) )
-		$src = remove_query_arg( 'ver', $src );
-	return $src;
-	
+    global $wp_admin_bar;
+    
+    $wp_admin_bar->remove_menu('wp-logo');          // Remove the WordPress logo
+    $wp_admin_bar->remove_menu('about');            // Remove the about WordPress link
+    $wp_admin_bar->remove_menu('wporg');            // Remove the WordPress.org link
+    $wp_admin_bar->remove_menu('support-forums');   // Remove the support forums link
+    $wp_admin_bar->remove_menu('feedback');         // Remove the feedback link
+    $wp_admin_bar->remove_menu('comments');         // Remove the comments link
+    // $wp_admin_bar->remove_menu('wpseo-menu');       // Remove the Yoast SEO menu
+  
 }
+add_action( 'wp_before_admin_bar_render', __NAMESPACE__ . '\\remove_admin_bar_links' );
 
-// remove WP version from RSS
+
+/**
+ * remove WP version from RSS
+ */
 function rss_version() { return ''; }
 add_filter( 'the_generator', __NAMESPACE__ . '\\rss_version' );
+
+
+/** 
+ * cleanup customizer
+ */
+function theme_customizer_clean( $wp_customize ) {
+
+	// Removes the theme switcher from the customizer
+	// because we don't want them switching away from our awesome theme!
+	$wp_customize->remove_section( 'themes' );
+
+  // Uncomment the below lines to remove the default controls
+  // $wp_customize->remove_section('title_tagline');
+  // $wp_customize->remove_section('colors');
+  // $wp_customize->remove_section('background_image');
+  // $wp_customize->remove_section('static_front_page');
+  // $wp_customize->remove_section('nav');
+  // $wp_customize->remove_control('blogdescription');
+  
+}
+add_action( 'customize_register', __NAMESPACE__ . '\\theme_customizer_clean' );
+
+
+/**
+ * Disables WordPress Dashboard Widgets
+ */
+function disable_default_dashboard_widgets() {  
+
+    remove_meta_box('dashboard_quick_press', 'dashboard', 'side');   // Quick Press
+    remove_meta_box('dashboard_recent_drafts', 'dashboard', 'side'); // Recent Drafts
+    remove_meta_box('dashboard_primary', 'dashboard', 'side');       // WordPress blog
+    remove_meta_box('dashboard_activity', 'dashboard', 'normal');    // Other WordPress News
+
+}  
+add_action( 'wp_dashboard_setup', __NAMESPACE__ . '\\disable_default_dashboard_widgets' );
+
+
+/** 
+ * remove menus from dashboard
+ * http://codex.wordpress.org/Function_Reference/remove_menu_page
+ * 
+ * uncomment below to remove menu pages
+ */
+// function remove_menus() {
+	
+ 	// remove_menu_page( 'edit-comments.php' );
+ 	// remove_submenu_page( 'themes.php', 'widgets.php' );
+// }
+// add_action( 'admin_menu', __NAMESPACE__ . '\\remove_menus' );
