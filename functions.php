@@ -18,6 +18,7 @@ $cpwpst_includes = [
 	'lib/assets.php',                // Scripts and stylesheets
 	'lib/titles.php',                // Page titles
 	'lib/extras.php',                // Extra functions
+	'lib/customizer.php',            // Customizer functions
 	'lib/custom.php',                // Custom functions
 ];
 
