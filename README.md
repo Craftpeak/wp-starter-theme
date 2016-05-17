@@ -2,6 +2,8 @@
 
 This is a WordPress starter theme based on the [Sage](https://github.com/roots/sage/) and [_s](https://github.com/Automattic/_s) starter themes, with a little bit of extra Craftpeak magic thrown in.
 
+**PLEASE NOTE: This is no longer maintained. We just use [Sage](https://github.com/roots/sage/).**
+
 ## Requirements
 
 | Prerequisite    | How to check | How to install
